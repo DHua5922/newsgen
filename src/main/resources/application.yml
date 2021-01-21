@@ -1,0 +1,4 @@
+server:
+    port: 5001
+
+news_api_key: 6c31ae36c2bb4baa8826528f90676ba7

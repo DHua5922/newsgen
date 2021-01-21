@@ -1,17 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
-WORKDIR /app
+FROM adoptopenjdk:14-jre-hotspot as builder
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENV ASPNETCORE_URLS http://*:5001
-ENTRYPOINT ["dotnet", "newsgen-backend.dll"]
+FROM adoptopenjdk:14-jre-hotspot
+EXPOSE 5001
+COPY --from=builder dependencies/ ./
+RUN true
+COPY --from=builder snapshot-dependencies/ ./
+RUN true
+COPY --from=builder spring-boot-loader/ ./
+RUN true
+COPY --from=builder application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
