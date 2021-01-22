@@ -10,4 +10,8 @@ module.exports = {
   
       return config
     },
+    env: {
+      API_DEV: process.env.API_DEV,
+      API_PROD: process.env.API_PROD
+    },
 }
