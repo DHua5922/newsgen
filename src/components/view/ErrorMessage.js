@@ -1,12 +1,19 @@
 import styled from "styled-components";
+import { ErrorCircle } from "@styled-icons/boxicons-regular/ErrorCircle";
+import { IconMessage } from "./IconMessage";
+import { styles } from "../../../styles/globals";
 
-const Message = styled.div`
-    font-weight: bold;
-    font-size: 2rem;
-`;
+const Icon = styled(ErrorCircle)`${styles.iconMessage}`;
 
 export function ErrorMessage({ message }) {
     return (
-        <Message>{message}</Message>
+        <IconMessage 
+            props={{
+                backgroundColor: "#FF7A7A",
+                textColor: "red"
+            }}
+            icon={<Icon />}
+            message={message}
+        />
     );
 }
