@@ -5,6 +5,7 @@ import com.newsgen.newsgenbackend.model.User;
 import com.newsgen.newsgenbackend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,9 @@ public class MyUserService {
 
     @Autowired
     private UserRepository repository;
+    
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public static final int MIN_USERNAME_LENGTH = 5;
     public static final int MIN_PASSWORD_LENGTH = 6;
@@ -26,7 +30,12 @@ public class MyUserService {
      * @return New user.
      */
     public User createUser(NewUser newUser) {
-        User user = new User(0, newUser.getUsername(), newUser.getEmail(), newUser.getPassword());
+        User user = new User(
+            0, 
+            newUser.getUsername(), 
+            newUser.getEmail(), 
+            encodePassword(newUser.getPassword())
+        );
         return repository.save(user);
     }
 
@@ -79,6 +88,27 @@ public class MyUserService {
      */
     public boolean isValidPassword(String password, String cpassword) {
         return password.equals(cpassword);
+    }
+
+    /**
+     * Encodes password.
+     * 
+     * @param password Password to encode.
+     * @return Encoded password.
+     */
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    /**
+     * Checks if the passwords match.
+     * 
+     * @param passwordNotEncoded Password not encoded.
+     * @param encodedPassword Encoded password.
+     * @return True if the passwords match or false.
+     */
+    public boolean isPasswordMatch(String passwordNotEncoded, String encodedPassword) {
+        return passwordNotEncoded.matches(encodedPassword);
     }
 
 }
