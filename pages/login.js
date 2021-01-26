@@ -1,44 +1,35 @@
+import { Button } from "react-bootstrap";
 import { useReducer } from "react";
 import Field from "../src/components/view/Field";
 import MyForm from "../src/components/view/MyForm";
+import { apiLink } from "../src/constants";
+import loginActions from "../src/redux/actions/loginAction";
+import loadReducer, { initialLoadState } from "../src/redux/reducers/loadReducer";
+import loginReducer, { initialLoginState } from "../src/redux/reducers/loginReducer";
+import { userServices } from "../src/services/user/UserService";
 import { styles } from "../styles/globals";
 import styled from "styled-components";
 import MyNavbar from "../src/components/view/MyNavbar";
-import { Button } from "react-bootstrap";
-import { apiLink } from "../src/constants";
-import signUpReducer, { initialSignUpState } from "../src/redux/reducers/signUpReducer";
-import loadReducer, { initialLoadState } from "../src/redux/reducers/loadReducer";
 import loadActions from "../src/redux/actions/loadAction";
-import signUpActions from "../src/redux/actions/signUpAction";
-import { userServices } from "../src/services/user/UserService";
+import { useRouter } from "next/router";
 
 const Center = styled.div`${styles.center}`;
 const FormPosition = styled.div`${styles.form}`;
 
-export default function SignUp() {
-    const [fieldValues, dispatchFields] = useReducer(signUpReducer, initialSignUpState);
+export default function Login() {
+    const [fieldValues, dispatchFields] = useReducer(loginReducer, initialLoginState);
     const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
+
+    const router = useRouter()
 
     const fields = [
         {
             label: {
-                children: "Username"
+                children: "Username or Email"
             },
             input: {
-                value: fieldValues.username,
-                placeholder: "abc123",
-                onChange: (evt) => dispatchFields(signUpActions.updateUsername(evt.target.value))
-            }
-        },
-        {
-            label: {
-                children: "Email"
-            },
-            input: {
-                type: "email",
-                value: fieldValues.email,
-                placeholder: "abc123@domain.com",
-                onChange: (evt) => dispatchFields(signUpActions.updateEmail(evt.target.value))
+                value: fieldValues.usernameOrEmail,
+                onChange: (evt) => dispatchFields(loginActions.updateUsernameOrEmail(evt.target.value))
             }
         },
         {
@@ -48,43 +39,32 @@ export default function SignUp() {
             input: {
                 type: "password",
                 value: fieldValues.password,
-                placeholder: "abc123!",
-                onChange: (evt) => dispatchFields(signUpActions.updatePassword(evt.target.value))
+                onChange: (evt) => dispatchFields(loginActions.updatePassword(evt.target.value))
             }
-        },
-        {
-            label: {
-                children: "Confirm Password"
-            },
-            input: {
-                type: "password",
-                value: fieldValues.cpassword,
-                placeholder: "abc123!",
-                onChange: (evt) => dispatchFields(signUpActions.updateCPassword(evt.target.value))
-            }
-        }
-    ];
-
-    const buttons = [
-        {
-            props: {
-                variant: "primary",
-                onClick: () => signUp()
-            },
-            children: "Sign Up"
         }
     ];
 
     const { successMsgs, errorMsgs, pending } = loadState;
 
-    function signUp() {
+    const buttons = [
+        {
+            props: {
+                variant: "primary",
+                onClick: () => login()
+            },
+            children: "Login"
+        }
+    ];
+
+    function login() {
         dispatchLoadState(loadActions.pending());
-        userServices.signUp(apiLink.signup, fieldValues)
+        userServices.signUp(apiLink.login, fieldValues)
             .then(success => {
-                dispatchLoadState(loadActions.success(success.data));
+                dispatchLoadState(loadActions.success([success.data]));
+                router.push("/user/dashboard");
             })
             .catch(error => {
-                dispatchLoadState(loadActions.fail(error.response.data));
+                dispatchLoadState(loadActions.fail([error.response.data]));
             });
     }
 
@@ -94,7 +74,7 @@ export default function SignUp() {
             <FormPosition>
                 <MyForm
                     header={{
-                        children: "Sign Up"
+                        children: "Login"
                     }}
                     fields={fields.map((field, index) => 
                         <div key={index}>
@@ -114,11 +94,11 @@ export default function SignUp() {
                         error: errorMsgs,
                         pending: {
                             isPending: pending,
-                            message: "Creating your account. Please wait." 
+                            message: "Signing you in. Please wait." 
                         }
                     }}
                 />
             </FormPosition>
         </Center>
-    ); 
+    );
 }

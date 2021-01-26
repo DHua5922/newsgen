@@ -1,6 +1,7 @@
 export const apiLink = {
     topNews: "news/top",
-    signup: "user/signup"
+    signup: "user/signup",
+    login: "auth/login"
 };
 
 export const redux = {
@@ -11,4 +12,5 @@ export const redux = {
     UPDATE_EMAIL: "UPDATE_EMAIL",
     UPDATE_PASSWORD: "UPDATE_PASSWORD",
     UPDATE_CPASSWORD: "UPDATE_CPASSWORD",
+    UPDATE_USERNAME_OR_EMAIL: "UPDATE_USERNAME_OR_EMAIL"
 };

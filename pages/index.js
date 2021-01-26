@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { Loader } from "../src/components/view/Loader";
 import { apiLink } from "../src/constants";
-import { newsServices } from "../src/services/news/News";
+import { newsServices } from "../src/services/news/NewsService";
 import { ErrorMessage } from "../src/components/view/ErrorMessage";
 import NewsGrid from "../src/components/view/NewsGrid";
 import MyNavbar from "../src/components/view/MyNavbar";
