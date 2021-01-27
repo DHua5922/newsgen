@@ -3,10 +3,12 @@ export const apiLink = {
     signup: "user/signup",
     login: "auth/login",
     favNews: "news/favorite",
+    logout: "auth/logout",
 };
 
 export const pageLink = {
-    dashboard: "/user/dashboard"
+    dashboard: "/user/dashboard",
+    home: "/"
 };
 
 export const redux = {
