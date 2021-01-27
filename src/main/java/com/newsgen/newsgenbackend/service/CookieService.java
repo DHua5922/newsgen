@@ -1,6 +1,7 @@
 package com.newsgen.newsgenbackend.service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
@@ -41,5 +42,13 @@ public class CookieService {
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         return cookie;
+    }
+
+    public void deleteAccessTokenCookie(HttpServletResponse response) {
+        response.addCookie(deleteCookie(accessTokenCookieName));
+    }
+
+    public void deleteRefreshTokenCookie(HttpServletResponse response) {
+        response.addCookie(deleteCookie(refreshTokenCookieName));
     }
 }

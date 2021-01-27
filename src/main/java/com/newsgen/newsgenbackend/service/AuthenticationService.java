@@ -1,5 +1,7 @@
 package com.newsgen.newsgenbackend.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.newsgen.newsgenbackend.model.Message;
 import com.newsgen.newsgenbackend.model.Token;
 import com.newsgen.newsgenbackend.model.User;
@@ -61,6 +63,12 @@ public class AuthenticationService {
             .ok()
             .headers(responseHeaders)
             .body(new Message("You are logged in."));
+    }
+
+    public Message logout(HttpServletResponse response) {
+        cookieService.deleteAccessTokenCookie(response);
+        cookieService.deleteRefreshTokenCookie(response);
+        return new Message("You have been logged out");
     }
 
     private void addAccessTokenCookie(HttpHeaders httpHeaders, Token token) {
