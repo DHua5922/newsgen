@@ -1,11 +1,14 @@
 package com.newsgen.newsgenbackend.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.newsgen.newsgenbackend.model.Message;
 import com.newsgen.newsgenbackend.model.UserLogin;
 import com.newsgen.newsgenbackend.service.AuthenticationService;
 import com.newsgen.newsgenbackend.service.SecurityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,5 +61,13 @@ public class AuthenticationController {
         }
 
         return response;
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Message> logout(HttpServletResponse response) {
+        return ResponseEntity
+            .ok()
+            .headers(new HttpHeaders())
+            .body(authService.logout(response));
     }
 }
