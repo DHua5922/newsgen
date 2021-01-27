@@ -1,7 +1,12 @@
 export const apiLink = {
     topNews: "news/top",
     signup: "user/signup",
-    login: "auth/login"
+    login: "auth/login",
+    favNews: "news/favorite",
+};
+
+export const pageLink = {
+    dashboard: "/user/dashboard"
 };
 
 export const redux = {

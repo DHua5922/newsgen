@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import { useReducer } from "react";
 import Field from "../src/components/view/Field";
 import MyForm from "../src/components/view/MyForm";
-import { apiLink } from "../src/constants";
+import { apiLink, pageLink } from "../src/constants";
 import loginActions from "../src/redux/actions/loginAction";
 import loadReducer, { initialLoadState } from "../src/redux/reducers/loadReducer";
 import loginReducer, { initialLoginState } from "../src/redux/reducers/loginReducer";
@@ -61,7 +61,7 @@ export default function Login() {
         userServices.signUp(apiLink.login, fieldValues)
             .then(success => {
                 dispatchLoadState(loadActions.success([success.data]));
-                router.push("/user/dashboard");
+                router.push(pageLink.dashboard);
             })
             .catch(error => {
                 dispatchLoadState(loadActions.fail([error.response.data]));
