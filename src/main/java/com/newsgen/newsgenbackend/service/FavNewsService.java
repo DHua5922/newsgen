@@ -3,6 +3,7 @@ package com.newsgen.newsgenbackend.service;
 import java.util.List;
 
 import com.newsgen.newsgenbackend.model.FavNews;
+import com.newsgen.newsgenbackend.model.News;
 import com.newsgen.newsgenbackend.repository.FavNewsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,26 @@ public class FavNewsService {
      */
     public List<FavNews> getFavoriteNews(int userId) {
         return favNewsRepository.findByUserId(userId);
+    }
+
+    /**
+     * Marks news as user's favorite.
+     * 
+     * @param news News to mark as favorite.
+     * @param userId User's id.
+     * @return Favorited news.
+     */
+    public FavNews markFavoriteNews(News news, int userId) {
+        FavNews favNews = new FavNews(
+            0,
+            userId,
+            news.getAuthor(),
+            news.getTitle(),
+            news.getDescription(),
+            news.getUrl(),
+            news.getUrlToImage(),
+            news.getPublishedAt()
+        );
+        return favNewsRepository.save(favNews);
     }
 }

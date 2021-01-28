@@ -26,7 +26,7 @@
 on:
   push:
     branches: 
-      - news-12
+      - news-14
 
 name: Deploy to Amazon Fargate
 

@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newsgen.newsgenbackend.model.FavNews;
 import com.newsgen.newsgenbackend.model.Message;
+import com.newsgen.newsgenbackend.model.News;
 import com.newsgen.newsgenbackend.service.FavNewsService;
 import com.newsgen.newsgenbackend.service.SecurityService;
 import com.newsgen.newsgenbackend.service.TokenService;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -64,5 +67,14 @@ public class NewsController {
     ) {
         int userId = tokenService.getIdFromToken(SecurityService.decrypt(accessToken));
         return favNewsService.getFavoriteNews(userId);
+    }
+
+    @PostMapping("/mark")
+    public FavNews markFavNews(
+        @CookieValue(name = "accessToken", required = true) String accessToken,
+        @RequestBody News news
+    ) {
+        int userId = tokenService.getIdFromToken(SecurityService.decrypt(accessToken));
+        return favNewsService.markFavoriteNews(news, userId);
     }
 }
