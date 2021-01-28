@@ -11,9 +11,11 @@ import ConfirmationPrompt from './ConfirmationPrompt';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ErrorMessage } from "./ErrorMessage";
+import { News } from "@styled-icons/boxicons-regular/News";
 
 const HomeIcon = styled(Home)`${styles.sideNavIcon}`;
 const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
+const NewsIcon = styled(News)`${styles.sideNavIcon}`;
 
 export default function Sidenav({ sidenav, navItems }) {
     const router = useRouter();
@@ -27,6 +29,12 @@ export default function Sidenav({ sidenav, navItems }) {
             eventKey: "home",
             label: "Home",
             icon: <HomeIcon />
+        },
+        {
+            onClick: () => router.push(pageLink.news),
+            eventKey: "news",
+            label: "News",
+            icon: <NewsIcon />,
         },
         {
             onClick: () => setShowPrompt(true),

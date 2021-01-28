@@ -4,11 +4,13 @@ export const apiLink = {
     login: "auth/login",
     favNews: "news/favorite",
     logout: "auth/logout",
+    markFav: "news/mark",
 };
 
 export const pageLink = {
     dashboard: "/user/dashboard",
-    home: "/"
+    home: "/",
+    news: "/user/news",
 };
 
 export const redux = {
