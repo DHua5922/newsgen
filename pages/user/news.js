@@ -8,10 +8,13 @@ import Sidenav from "../../src/components/view/Sidenav";
 import { useState } from "react";
 import ConfirmationPrompt from "../../src/components/view/ConfirmationPrompt";
 import { ErrorMessage } from "../../src/components/view/ErrorMessage";
+import { Star } from "@styled-icons/boxicons-regular/Star";
+import { styles } from "../../styles/globals";
 
 const fetcher = (url) => newsServices.getTopNews(url).then(response => response.data);
 
 const Container = styled.div`padding: 32px 44px;`;
+const FavIcon = styled(Star)`${styles.newsIcon}`;
 
 export default function NewsPage() {
     const { data, error } = useSWR(
@@ -31,34 +34,33 @@ export default function NewsPage() {
         componentToRender = <Loader />;
     } else {
         componentToRender = (
-        <Container>
-            <NewsGrid 
-                list={data.articles.map(news => {
-                    return {
-                        ...news, 
-                        fav: {
-                            canShow: true,
-                            onClick: () => newsServices.markFav(news)
+            <Container>
+                <NewsGrid 
+                    list={data.articles.map(news => {
+                        return {
+                            ...news, 
+                            icon: <FavIcon
+                                        onClick={() => newsServices.markFav(news)
                                             .then(() => setMarkError(null))
-                                            .catch(error => setMarkError(error.response))
-                        }
-                    };
-                })} 
-            />
-            <ConfirmationPrompt 
-                modal={{
-                    show: markError ? true : false,
-                    onHide: () => setMarkError(null)
-                }}
-                header={{
-                    children: "Cannot Mark News"
-                }}
-                body={{
-                    children: "There was a problem marking this news. Please try again."
-                }}
-                footer={{}}
-            />
-        </Container>);
+                                            .catch(error => setMarkError(error.response))}
+                                    />
+                        };
+                    })} 
+                />
+                <ConfirmationPrompt 
+                    modal={{
+                        show: markError ? true : false,
+                        onHide: () => setMarkError(null)
+                    }}
+                    header={{
+                        children: "Cannot Mark News"
+                    }}
+                    body={{
+                        children: "There was a problem marking this news. Please try again."
+                    }}
+                    footer={{}}
+                />
+            </Container>);
     }
 
     return (

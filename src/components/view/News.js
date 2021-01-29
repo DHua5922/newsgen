@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { styles } from "../../../styles/globals";
-import { Star } from "@styled-icons/boxicons-regular/Star";
 
 const Title = styled.h4`
     ${styles.ellipsisOverflow}
@@ -27,17 +26,11 @@ const Row = styled.div`
     justify-content: space-between;
 `;
 
-const FavIcon = styled(Star)`
-    cursor: pointer;
-    height: 3rem;
-    display: ${props => props.canShow ? "block" : "none"};
-`;
-
 const NewsDisplay = styled.div`
     position: relative;
 `;
 
-export function News({ title, urlToImage, description, url, fav }) {
+export function News({ title, urlToImage, description, url, icon }) {
     return (
         <NewsDisplay>
             <Row>  
@@ -46,7 +39,7 @@ export function News({ title, urlToImage, description, url, fav }) {
                         {title}
                     </Link>
                 </Title>
-                <FavIcon {...fav} />
+                { icon }
             </Row>  
             <Image src={urlToImage} />
             <Description>{description}</Description>

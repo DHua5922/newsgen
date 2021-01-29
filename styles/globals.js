@@ -17,5 +17,8 @@ export const styles = {
         width: 3rem;
         height: 3rem;`,
     sideNavIcon: `
-        height: 1.75rem;`
+        height: 1.75rem;`,
+    newsIcon: `
+        height: 2rem;
+        cursor: pointer;`,
 };

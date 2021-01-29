@@ -5,6 +5,7 @@ export const apiLink = {
     favNews: "news/favorite",
     logout: "auth/logout",
     markFav: "news/mark",
+    deleteFav: (id) => `news/delete?id=${id}` 
 };
 
 export const pageLink = {
