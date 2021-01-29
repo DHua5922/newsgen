@@ -47,4 +47,13 @@ public class FavNewsService {
         );
         return favNewsRepository.save(favNews);
     }
+
+    /**
+     * Deletes favorite news.
+     * 
+     * @param newsId News id.
+     */
+    public void deleteFavoriteNews(int newsId) {
+        favNewsRepository.deleteById(newsId);
+    }
 }
