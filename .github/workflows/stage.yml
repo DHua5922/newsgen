@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - news-17
+      - news-19
 
 jobs:
   build:

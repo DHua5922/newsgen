@@ -5,13 +5,16 @@ export const apiLink = {
     favNews: "news/favorite",
     logout: "auth/logout",
     markFav: "news/mark",
-    deleteFav: (id) => `news/delete?id=${id}` 
+    deleteFav: (id) => `news/delete?id=${id}`,
+    updateProfile: "user/profile", 
+    getProfile: "user/info", 
 };
 
 export const pageLink = {
     dashboard: "/user/dashboard",
     home: "/",
     news: "/user/news",
+    profile: "/user/profile",
 };
 
 export const redux = {

@@ -12,10 +12,12 @@ import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ErrorMessage } from "./ErrorMessage";
 import { News } from "@styled-icons/boxicons-regular/News";
+import { Profile } from "@styled-icons/icomoon/Profile";
 
 const HomeIcon = styled(Home)`${styles.sideNavIcon}`;
 const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
 const NewsIcon = styled(News)`${styles.sideNavIcon}`;
+const ProfileIcon = styled(Profile)`${styles.sideNavIcon}`;
 
 export default function Sidenav({ sidenav, navItems }) {
     const router = useRouter();
@@ -37,11 +39,17 @@ export default function Sidenav({ sidenav, navItems }) {
             icon: <NewsIcon />,
         },
         {
+            onClick: () => router.push(pageLink.profile),
+            eventKey: "profile",
+            label: "Profile",
+            icon: <ProfileIcon />,
+        },
+        {
             onClick: () => setShowPrompt(true),
             eventKey: "logout",
             label: "Log Out",
             icon: <LogoutIcon />,
-        }
+        },
     ];
 
     const footerButtons = [
