@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import com.newsgen.newsgenbackend.model.NewUser;
 import com.newsgen.newsgenbackend.model.Profile;
 import com.newsgen.newsgenbackend.model.User;
 import com.newsgen.newsgenbackend.service.AuthenticationService;
+import com.newsgen.newsgenbackend.service.CookieService;
 import com.newsgen.newsgenbackend.service.MyUserService;
 import com.newsgen.newsgenbackend.service.SecurityService;
 import com.newsgen.newsgenbackend.service.TokenService;
@@ -45,6 +47,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private CookieService cookieService;
 
     @PostMapping("/signup")
     public ResponseEntity<List<Message>> signup(@RequestBody NewUser newUser) {
@@ -139,5 +144,16 @@ public class UserController {
             .ok()
             .headers(responseHeaders)
             .body(messageMap);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteUser(
+        HttpServletResponse response,
+        @CookieValue(name = "accessToken", required = false) String accessToken
+    ) {
+        int userId = tokenService.getIdFromToken(SecurityService.decrypt(accessToken));
+        userService.deleteUser(userId);
+        cookieService.deleteAccessTokenCookie(response);
+        cookieService.deleteRefreshTokenCookie(response);
     }
 }

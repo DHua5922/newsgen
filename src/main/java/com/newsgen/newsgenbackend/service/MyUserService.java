@@ -131,4 +131,13 @@ public class MyUserService {
         return repository.save(updatedUser);
     }
 
+    /**
+     * Deletes the user.
+     * 
+     * @param userId User's id.
+     */
+    public void deleteUser(int userId) {
+        repository.deleteById(userId);
+    }
+
 }
