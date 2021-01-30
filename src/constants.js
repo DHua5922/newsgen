@@ -7,7 +7,8 @@ export const apiLink = {
     markFav: "news/mark",
     deleteFav: (id) => `news/delete?id=${id}`,
     updateProfile: "user/profile", 
-    getProfile: "user/info", 
+    getProfile: "user/info",
+    deleteAccount: "user/delete",
 };
 
 export const pageLink = {

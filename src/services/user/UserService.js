@@ -7,4 +7,5 @@ export const userServices = {
     logout: () => axios.post(apiLink.logout),
     updateProfile: (data) => axios.patch(apiLink.updateProfile, data),
     getProfile: () => axios.get(apiLink.getProfile),
+    deleteAccount: () => axios.delete(apiLink.deleteAccount),
 };

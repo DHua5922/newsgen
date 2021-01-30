@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { Button } from "react-bootstrap";
 import loadActions from "../../src/redux/actions/loadAction";
 import signUpActions from "../../src/redux/actions/signUpAction";
@@ -11,13 +11,18 @@ import Sidenav from "../../src/components/view/Sidenav";
 import { ErrorMessage } from "../../src/components/view/ErrorMessage";
 import { Loader } from "../../src/components/view/Loader";
 import useSWR from "swr";
-import { apiLink } from "../../src/constants";
+import { apiLink, pageLink } from "../../src/constants";
+import ConfirmationPrompt from "../../src/components/view/ConfirmationPrompt";
+import { useRouter } from 'next/router';
 
 const fetcher = (url) => userServices.getProfile();
 
 export default function Profile() {
     const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
     const [fieldValues, dispatchFields] = useReducer(signUpReducer, initialSignUpState);
+    const [showAskPrompt, setShowAskPrompt] = useState(false);
+    const [deleteError, setDeleteError] = useState(null);
+    const router = useRouter();
 
     const { successMsgs, errorMsgs, pending } = loadState;
 
@@ -39,7 +44,8 @@ export default function Profile() {
         componentToRender = (
             <MyForm
                 header={{
-                    children: "Profile"
+                    children: "Profile",
+                    textAlign: "left",
                 }}
                 fields={[
                     {
@@ -106,7 +112,53 @@ export default function Profile() {
     return (
         <>
             <Sidenav />
-            <div style={{padding: "0 5vw"}}>{componentToRender}</div>
+            {componentToRender}
+            <h1>Delete Account</h1>
+            <p>You cannot undo this action. Please be sure about this.</p>
+            <Button variant="danger" onClick={() => setShowAskPrompt(true)}>
+                Delete Account
+            </Button>
+            <ConfirmationPrompt
+                modal={{
+                    show: showAskPrompt,
+                    onHide: () => setShowAskPrompt(false),
+                }}
+                header={{
+                    children: "Delete Account?"
+                }}
+                body={{
+                    children: <>
+                        Are you sure you want to delete your account? You cannot undo this.
+                        {
+                            deleteError && 
+                                <ErrorMessage
+                                    message={"There was a problem deleting your account. Please try again."}
+                                />
+                        }
+                    </>
+                }}
+                footer={{
+                    children: [
+                        {
+                            props: {
+                                variant: "primary",
+                                onClick: () => setShowAskPrompt(false),
+                            },
+                            children: "Cancel"
+                        },
+                        {
+                            props: {
+                                variant: "danger",
+                                onClick: () => userServices
+                                    .deleteAccount()
+                                    .then(() => router.push(pageLink.home))
+                                    .catch(error => setDeleteError(error.response)),
+                            },
+                            children: "Delete Account"
+                        },
+                    ].map(button => <Button {...button.props}>{button.children}</Button>)
+                }}
+            />
         </>
     );
 }

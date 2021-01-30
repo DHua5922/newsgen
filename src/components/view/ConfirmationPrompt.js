@@ -5,7 +5,7 @@ const Footer = styled(Modal.Footer)`
     border-top: 0;
 `;
 
-export default function ConfirmationPrompt({ modal, header, body, footer }) {
+export default function ConfirmationPrompt({ modal={}, header={}, body={}, footer={} }) {
     
     return (
         <Modal {...modal} centered>
