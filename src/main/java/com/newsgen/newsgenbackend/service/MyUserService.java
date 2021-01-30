@@ -40,6 +40,16 @@ public class MyUserService {
     }
 
     /**
+     * Gets user by id.
+     * 
+     * @param userId User's id.
+     * @return User with given id.
+     */
+    public User getUser(int userId) {
+        return repository.findById(userId).get();
+    }
+
+    /**
      * Gets user by username or email.
      * 
      * @param usernameOrEmail User's username or email.
@@ -109,6 +119,16 @@ public class MyUserService {
      */
     public boolean isPasswordMatch(String passwordNotEncoded, String encodedPassword) {
         return passwordNotEncoded.matches(encodedPassword);
+    }
+
+    /**
+     * Updates the user.
+     * 
+     * @param updatedUser Updated user.
+     * @return Updated user.
+     */
+    public User updateUser(User updatedUser) {
+        return repository.save(updatedUser);
     }
 
 }
