@@ -25,7 +25,10 @@ public class Message {
         USERNAME_LENGTH("Username must be at least " + MyUserService.MIN_USERNAME_LENGTH + " characters."), 
         USERNAME_TAKEN("Username has already been taken."), 
         EMAIL_INVALID("Email is not valid."), 
-        EMAIL_TAKEN("Email has already been taken.");
+        EMAIL_TAKEN("Email has already been taken."),
+        NO_MATCHING_PASSWORDS("Passwords do not match."),
+        INVALID_PASSWORD("Password must be at least " + MyUserService.MIN_PASSWORD_LENGTH + " characters"),
+        EXPIRED_LINK("Link has expired.");
 
         private String message;
     }

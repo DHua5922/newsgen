@@ -1,6 +1,7 @@
 package com.newsgen.newsgenbackend.controller;
 
 import com.newsgen.newsgenbackend.model.Message;
+import com.newsgen.newsgenbackend.model.NewPassword;
 import com.newsgen.newsgenbackend.model.Token;
 import com.newsgen.newsgenbackend.model.User;
 import com.newsgen.newsgenbackend.service.DateService;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
@@ -89,5 +93,35 @@ public class PasswordController {
         }   
 
         return response;
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<List<Message>> resetPassword(@RequestBody NewPassword newPassword) {
+        List<Message> messageList = new ArrayList<Message>();
+        String token = SecurityService.decrypt(newPassword.getToken());
+
+        if(!tokenService.validateToken(token)) {
+            messageList.add(new Message(Message.Error.EXPIRED_LINK.getMessage()));
+        } else {
+            if(!myUserService.isValidPassword(newPassword.getPassword())) {
+                // Invalid password
+                messageList.add(new Message(Message.Error.INVALID_PASSWORD.getMessage()));
+            }
+            if(!newPassword.getPassword().equals(newPassword.getCpassword())){
+                // No matching password
+                messageList.add(new Message(Message.Error.NO_MATCHING_PASSWORDS.getMessage()));
+            }
+        }
+        
+        if(messageList.size() > 0) {
+            return ResponseEntity.badRequest().body(messageList);
+        } else {
+            int userId = tokenService.getIdFromToken(token);
+            User user = myUserService.getUser(userId);
+            user.setPassword(myUserService.encodePassword(newPassword.getPassword()));
+            myUserService.updateUser(user);
+            messageList.add(new Message("Password has been changed."));
+            return ResponseEntity.ok().body(messageList);
+        }
     }
 }
