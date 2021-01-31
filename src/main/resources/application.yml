@@ -18,3 +18,7 @@ authentication:
     refreshTokenExpirationMsec: 7776000000 # 90 days
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
+
+mailjet:
+    publicAPIKey: 977c831a455cec7c6d4c509d0acd452b
+    privateAPIKey: ebe38830545cfd3c7c653d0f53b4193d
