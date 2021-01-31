@@ -9,6 +9,7 @@ export const apiLink = {
     updateProfile: "user/profile", 
     getProfile: "user/info",
     deleteAccount: "user/delete",
+    sendEmail: "password/sendemail",
 };
 
 export const pageLink = {
@@ -16,6 +17,7 @@ export const pageLink = {
     home: "/",
     news: "/user/news",
     profile: "/user/profile",
+    email: "/password/email",
 };
 
 export const redux = {

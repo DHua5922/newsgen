@@ -8,4 +8,5 @@ export const userServices = {
     updateProfile: (data) => axios.patch(apiLink.updateProfile, data),
     getProfile: () => axios.get(apiLink.getProfile),
     deleteAccount: () => axios.delete(apiLink.deleteAccount),
+    sendEmail: (data) => axios.post(apiLink.sendEmail, data),
 };

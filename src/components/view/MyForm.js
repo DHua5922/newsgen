@@ -13,7 +13,7 @@ const Container = styled.div`
     margin-top: 20px;
 `;
 
-export default function MyForm({ form, header, fields, buttons, messages }) {
+export default function MyForm({ form={}, header={}, fields={}, buttons={}, messages={} }) {
     return (
         <Form {...form}>
             <Header {...header.props}>

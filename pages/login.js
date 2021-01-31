@@ -98,6 +98,7 @@ export default function Login() {
                         }
                     }}
                 />
+                <a href={pageLink.email}>Forgot password?</a>
             </FormPosition>
         </Center>
     );
