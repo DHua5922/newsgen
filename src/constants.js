@@ -10,6 +10,7 @@ export const apiLink = {
     getProfile: "user/info",
     deleteAccount: "user/delete",
     sendEmail: "password/sendemail",
+    resetPassword: "password/reset",
 };
 
 export const pageLink = {
@@ -18,6 +19,7 @@ export const pageLink = {
     news: "/user/news",
     profile: "/user/profile",
     email: "/password/email",
+    login: "/login",
 };
 
 export const redux = {
