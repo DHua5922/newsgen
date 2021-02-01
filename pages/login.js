@@ -13,93 +13,101 @@ import MyNavbar from "../src/components/view/MyNavbar";
 import loadActions from "../src/redux/actions/loadAction";
 import { useRouter } from "next/router";
 
-const Center = styled.div`${styles.center}`;
-const FormPosition = styled.div`${styles.form}`;
+const Container = styled.div`
+    ${styles.form}
+    padding-top: 30vh;
+`;
+
+const header = {
+    children: "Login"
+};
 
 export default function Login() {
     const [fieldValues, dispatchFields] = useReducer(loginReducer, initialLoginState);
     const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
 
-    const router = useRouter()
-
+    const { usernameOrEmail, password } = fieldValues;
     const fields = [
-        {
-            label: {
-                children: "Username or Email"
+            {
+                label: {
+                    children: "Username or Email"
+                },
+                input: {
+                    value: usernameOrEmail,
+                    onChange: (evt) => dispatchFields(loginActions.updateUsernameOrEmail(evt.target.value))
+                }
             },
-            input: {
-                value: fieldValues.usernameOrEmail,
-                onChange: (evt) => dispatchFields(loginActions.updateUsernameOrEmail(evt.target.value))
+            {
+                label: {
+                    children: "Password"
+                },
+                input: {
+                    type: "password",
+                    value: password,
+                    onChange: (evt) => dispatchFields(loginActions.updatePassword(evt.target.value))
+                }
             }
-        },
-        {
-            label: {
-                children: "Password"
-            },
-            input: {
-                type: "password",
-                value: fieldValues.password,
-                onChange: (evt) => dispatchFields(loginActions.updatePassword(evt.target.value))
-            }
-        }
-    ];
-
-    const { successMsgs, errorMsgs, pending } = loadState;
+        ].map((field, index) => (
+            <div key={index}>
+                <Field {...field} />
+            </div>
+        ));
 
     const buttons = [
-        {
-            props: {
-                variant: "primary",
-                onClick: () => login()
-            },
-            children: "Login"
-        }
-    ];
+            {
+                props: {
+                    variant: "primary",
+                    onClick: () => login()
+                },
+                children: "Login"
+            }
+        ].map((button, index) => {
+            const { props, children } = button;
+            return (
+                <Button {...props} block key={index}>
+                    {children}
+                </Button>
+            );
+        });
 
+    const router = useRouter();
     function login() {
         dispatchLoadState(loadActions.pending());
         userServices.signUp(apiLink.login, fieldValues)
-            .then(success => {
-                dispatchLoadState(loadActions.success([success.data]));
-                router.push(pageLink.dashboard);
-            })
+            .then(() => router.push(pageLink.dashboard))
             .catch(error => {
-                dispatchLoadState(loadActions.fail([error.response.data]));
+                if(error.response && error.response.status === 400)
+                    dispatchLoadState(loadActions.fail([error.response.data]));
+                else
+                    dispatchLoadState(loadActions.fail([
+                        {
+                            message: "There was a problem logging you in. Please try again."
+                        }
+                    ]));
             });
     }
 
+    const { errorMsgs, pending } = loadState;
+    const messages = {
+        success: [],
+        error: errorMsgs,
+        pending: {
+            isPending: pending,
+            message: "Signing you in. Please wait." 
+        }
+    };
     return (
-        <Center>
+        <>
             <MyNavbar />
-            <FormPosition>
+            <Container>
                 <MyForm
-                    header={{
-                        children: "Login"
-                    }}
-                    fields={fields.map((field, index) => 
-                        <div key={index}>
-                            <Field {...field} />
-                        </div>
-                    )}
-                    buttons={buttons.map((button, index) => {
-                        const { props, children } = button;
-                        return (
-                            <Button {...props} block key={index}>
-                                {children}
-                            </Button>
-                        );
-                    })}
-                    messages={{
-                        success: successMsgs,
-                        error: errorMsgs,
-                        pending: {
-                            isPending: pending,
-                            message: "Signing you in. Please wait." 
-                        }
-                    }}
+                    header={header}
+                    fields={fields}
+                    buttons={buttons}
+                    messages={messages}
                 />
                 <a href={pageLink.email}>Forgot password?</a>
-            </FormPosition>
-        </Center>
+            </Container>
+        </>
     );
 }

@@ -2,7 +2,7 @@ import { Form } from 'react-bootstrap';
 import { ErrorMessage } from './ErrorMessage';
 import { SuccessMessage } from './SuccessMessage';
 
-export default function Field({ label, input, successMsgs = [], errorMsgs = [] }) {
+export default function Field({ label={}, input={}, successMsgs = [], errorMsgs = [] }) {
     return (
         <Form.Group>
             <Form.Label {...label.props}>

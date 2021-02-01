@@ -10,11 +10,10 @@ export const styles = {
         height: 100%;
         width: 100%;`,
     form:`
-        width: 100%;
-        max-width: 500px;
+        padding: 35px;
+        max-width: 400px;
         margin: auto;`,
     iconMessage: `
-        padding: 8px;
         width: 3rem;
         height: 3rem;`,
     sideNavIcon: `

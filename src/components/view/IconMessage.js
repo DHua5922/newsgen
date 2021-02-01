@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Message = styled.div`
     font-size: 1rem;
-    padding: 0 10px;
+    margin-left: 10px;
 `;
 
 const Row = styled.div`
@@ -10,6 +10,7 @@ const Row = styled.div`
     background-color: ${props => props.backgroundColor || "white"};
     color: ${props => props.textColor || "black"};
     align-items: center;
+    padding: ${props => props.padding || "10px"};
 `;
 
 export function IconMessage({ message, icon, props }) {
