@@ -1,5 +1,5 @@
-import '../styles/globals.css'
-import '../src/services/request'
+import '../styles/globals.css';
+import '../src/services/interceptor';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function MyApp({ Component, pageProps }) {

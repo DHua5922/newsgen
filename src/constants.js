@@ -1,4 +1,7 @@
 export const apiLink = {
+    baseUrl: (process.env.NODE_ENV === 'production') 
+        ? "https://newsgen-backend-23689059.us-west-2.elb.amazonaws.com/" 
+        : "http://localhost:5001/",
     topNews: "news/top",
     signup: "user/signup",
     login: "auth/login",
@@ -11,6 +14,7 @@ export const apiLink = {
     deleteAccount: "user/delete",
     sendEmail: "password/sendemail",
     resetPassword: "password/reset",
+    refreshToken: "auth/refreshtoken",
 };
 
 export const pageLink = {

@@ -10,4 +10,5 @@ export const userServices = {
     deleteAccount: () => axios.delete(apiLink.deleteAccount),
     sendEmail: (data) => axios.post(apiLink.sendEmail, data),
     resetPassword: (data) => axios.post(apiLink.resetPassword, data),
+    refreshToken: () => axios.post(apiLink.refreshToken),
 };
