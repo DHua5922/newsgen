@@ -1,16 +1,17 @@
-import ReactLoading from 'react-loading';
+import Spinner from 'react-bootstrap/Spinner';
 import { IconMessage } from './IconMessage';
 
-export function Loader({ type, color, height, width, message }) {
+const LoadIcon = (
+    <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+    </Spinner>
+);
+
+export function Loader({ icon=LoadIcon, message="" }) {
     return (
         <IconMessage 
-            icon={<ReactLoading 
-                type={type ? type : 'spin'} 
-                color={color ? color : 'black'} 
-                height={height ? height : '5%'} 
-                width={width ? width : '5%'} 
-            />}
-            message={message ? message : ""}
+            icon={icon}
+            message={message}
         />
     );
 }

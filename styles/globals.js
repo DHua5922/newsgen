@@ -5,9 +5,10 @@ export const styles = {
         text-overflow: ellipsis;`,
     center:`
         display: grid;
-        align-items: center;
-        width: 100%;
-        height: 100%;`,
+        justify-content: center;
+        align-content: center;
+        height: 100%;
+        width: 100%;`,
     form:`
         width: 100%;
         max-width: 500px;
@@ -21,4 +22,7 @@ export const styles = {
     newsIcon: `
         height: 2rem;
         cursor: pointer;`,
+    fullWidth: `
+        width: 100%;
+        height: 100%`,
 };

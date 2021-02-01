@@ -17,6 +17,7 @@ const links = [
 const NavBar = styled.div`
     position: fixed;
     width: 100%;
+    z-index: 1;
 `;
 
 export default function MyNavbar() {

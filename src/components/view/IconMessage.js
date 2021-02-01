@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Message = styled.div`
     font-size: 1rem;
-    margin-left: 10px;
+    padding: 0 10px;
 `;
 
 const Row = styled.div`
