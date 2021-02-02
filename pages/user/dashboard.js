@@ -6,108 +6,126 @@ import { ErrorMessage } from "../../src/components/view/ErrorMessage";
 import Sidenav from "../../src/components/view/Sidenav";
 import { TrashFill } from "@styled-icons/bootstrap/TrashFill";
 import { styles } from "../../styles/globals";
-import { useState, useReducer, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import ConfirmationPrompt from "../../src/components/view/ConfirmationPrompt";
 import { Button } from "react-bootstrap";
 import loadReducer, { initialLoadState } from "../../src/redux/reducers/loadReducer";
 import loadActions from "../../src/redux/actions/loadAction";
+import dashboardReducer, { initialDashboardState } from "../../src/redux/reducers/dashboardReducer";
+import dashboardActions from "../../src/redux/actions/dashboardAction";
 
-const Container = styled.div`padding: 32px 44px;`;
+const Container = styled.div`
+    padding: 32px 44px;
+    margin-left: 60px;
+`;
+const Center = styled.div`${styles.center}`;
 const DeleteIcon = styled(TrashFill)`${styles.newsIcon}`;
+
+const header = {
+    children: "Delete this news?"
+};
 
 export default function Dashboard() {
     const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
-    const [newsToDelete, setNewsToDelete] = useState(null);
-    const [favNews, setFavNews] = useState(null);
+    const [dashboardState, dispatchDashboardState] = useReducer(dashboardReducer, initialDashboardState);
+
+    const { favNews, newsToDelete } = dashboardState;
 
     useEffect(() => {
         if(!favNews)
             newsServices
                 .getFavNews()
-                .then(response => setFavNews(response.data));
+                .then(response => dispatchDashboardState(dashboardActions.updateFavNews(response.data)));
     });
 
     let componentToRender;
     if(!favNews) {
-        componentToRender = <Loader />;
+        componentToRender = <Center><Loader message={"Loading favorite news..."} /></Center>;
     } else {
         const { errorMsgs, pending } = loadState;
 
-        const newsData = favNews.map((news, index) => {
+        const list = favNews.map((news, index) => {
             return {
                 ...news,
                 icon: <DeleteIcon 
-                    onClick={() => setNewsToDelete({...news, index: index})}
+                    onClick={() => dispatchDashboardState(dashboardActions.setNewsToDelete({...news, index: index}))}
                 />
             };
         });
 
-        const promptButtons = [
-            {
-                props: {
-                    variant: "primary",
-                    onClick: () => setNewsToDelete(null)
-                },
-                children: "Cancel"
-            },
-            {
-                props: {
-                    variant: "danger",
-                    onClick: () => {
-                        dispatchLoadState(loadActions.pending());
-                        newsServices
-                            .deleteFav(newsToDelete.id)
-                            .then(() => {
-                                setFavNews(favNews.filter((news, index) => index !== newsToDelete.index));
-                                setNewsToDelete(null);
-                                dispatchLoadState(loadActions.success([]));
-                            })
-                            .catch(() => dispatchLoadState(loadActions.fail(["There was a problem deleting this news. Pleaes try again."])))
-                    }
-                },
-                children: "Delete News"
-            },
-        ];
+        const modal = {
+            show: newsToDelete ? true : false,
+            onHide: () => {
+                dispatchDashboardState(dashboardActions.setNewsToDelete(null));
+                dispatchLoadState(loadActions.success([]));
+            }
+        };
+
+        const body = {
+            children: <>
+                        Are you sure you want to delete this news?
+                        {
+                            pending &&
+                                <Loader 
+                                    message={"Deleting news. Please wait."} 
+                                />
+                        }
+                        {
+                            errorMsgs.map(message => (
+                                <ErrorMessage
+                                    message={message}
+                                />
+                            ))
+                        }
+                    </>
+        };
+
+        const footer = {
+            children: [
+                    {
+                        props: {
+                            variant: "primary",
+                            onClick: () => dispatchDashboardState(dashboardActions.setNewsToDelete(null))
+                        },
+                        children: "Cancel"
+                    },
+                    {
+                        props: {
+                            variant: "danger",
+                            onClick: () => {
+                                dispatchLoadState(loadActions.pending());
+                                newsServices
+                                    .deleteFav(newsToDelete.id)
+                                    .then(() => {
+                                        dispatchDashboardState(dashboardActions.setAll({
+                                            newsToDelete: null,
+                                            favNews: favNews.filter((_, index) => index !== newsToDelete.index),
+                                        }));
+                                        dispatchLoadState(loadActions.success([]));
+                                    })
+                                    .catch(() => dispatchLoadState(loadActions.fail(["There was a problem deleting this news. Pleaes try again."])))
+                            }
+                        },
+                        children: "Delete News"
+                    },
+                ].map(button => (
+                    <Button {...button.props}>
+                        {button.children}
+                    </Button>
+                ))
+        };
 
         componentToRender = (
             <Container>
-                <NewsGrid list={newsData} />
+                <NewsGrid list={list} />
                 <ConfirmationPrompt 
-                    modal={{
-                        show: newsToDelete ? true : false,
-                        onHide: () => {
-                            setNewsToDelete(null);
-                            dispatchLoadState(loadActions.success([]));
-                        }
-                    }}
-                    header={{
-                        children: "Delete this news?"
-                    }}
-                    body={{
-                        children: <>
-                            Are you sure you want to delete this news?
-                            {
-                                pending &&
-                                    <Loader 
-                                        message={"Deleting news. Please wait."} 
-                                    />
-                            }
-                            {
-                                errorMsgs.map(message =>
-                                    <ErrorMessage
-                                        message={message}
-                                    />) 
-                            }
-                        </>
-                    }}
-                    footer={{
-                        children: promptButtons.map(button => 
-                                        <Button {...button.props}>
-                                            {button.children}
-                                        </Button>)
-                    }}
+                    modal={modal}
+                    header={header}
+                    body={body}
+                    footer={footer}
                 />
-            </Container>);
+            </Container>
+        );
     }
 
     return (
