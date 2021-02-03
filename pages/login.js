@@ -75,16 +75,7 @@ export default function Login() {
         dispatchLoadState(loadActions.pending());
         userServices.login(fieldValues)
             .then(() => router.push(pageLink.dashboard))
-            .catch(error => {
-                if(error.response && error.response.status === 400)
-                    dispatchLoadState(loadActions.fail([error.response.data]));
-                else
-                    dispatchLoadState(loadActions.fail([
-                        {
-                            message: "There was a problem logging you in. Please try again."
-                        }
-                    ]));
-            });
+            .catch(() => dispatchLoadState(loadActions.fail([{message: "Incorrect username, email, and/or password"}])));
     }
 
     const { errorMsgs, pending } = loadState;
