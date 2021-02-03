@@ -13,7 +13,11 @@ import { styles } from "../../styles/globals";
 
 const fetcher = (url) => newsServices.getTopNews(url).then(response => response.data);
 
-const Container = styled.div`padding: 32px 44px;`;
+const Container = styled.div`
+    padding: 32px 44px;
+    margin-left: 50px;
+`;
+const Center = styled.div`${styles.center}`;
 const FavIcon = styled(Star)`${styles.newsIcon}`;
 
 export default function NewsPage() {
@@ -26,41 +30,55 @@ export default function NewsPage() {
     let componentToRender;
     if(error) {
         componentToRender = (
-            <ErrorMessage
-                message={"Cannot load news"} 
-            />
+            <Center>
+                <ErrorMessage
+                    message={"Cannot load news"} 
+                />
+            </Center>
         );
     } else if(!data) {
-        componentToRender = <Loader />;
+        componentToRender = (
+            <Center>
+                <Loader 
+                    message={"Loading news..."} 
+                />
+            </Center>
+        );
     } else {
+        const newsList = data.articles.map(news => {
+            return {
+                ...news, 
+                icon: <FavIcon
+                            onClick={() => newsServices.markFav(news)
+                                .then(() => setMarkError(null))
+                                .catch(error => setMarkError(error.response))}
+                        />
+            };
+        });
+
+        const modal = {
+            show: markError ? true : false,
+            onHide: () => setMarkError(null)
+        };
+
+        const header = {
+            children: "Cannot Mark News"
+        };
+
+        const body = {
+            children: "There was a problem marking this news. Please try again."
+        };
+
         componentToRender = (
             <Container>
-                <NewsGrid 
-                    list={data.articles.map(news => {
-                        return {
-                            ...news, 
-                            icon: <FavIcon
-                                        onClick={() => newsServices.markFav(news)
-                                            .then(() => setMarkError(null))
-                                            .catch(error => setMarkError(error.response))}
-                                    />
-                        };
-                    })} 
-                />
+                <NewsGrid list={newsList} />
                 <ConfirmationPrompt 
-                    modal={{
-                        show: markError ? true : false,
-                        onHide: () => setMarkError(null)
-                    }}
-                    header={{
-                        children: "Cannot Mark News"
-                    }}
-                    body={{
-                        children: "There was a problem marking this news. Please try again."
-                    }}
-                    footer={{}}
+                    modal={modal}
+                    header={header}
+                    body={body}
                 />
-            </Container>);
+            </Container>
+        );
     }
 
     return (

@@ -18,6 +18,7 @@ const HomeIcon = styled(Home)`${styles.sideNavIcon}`;
 const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
 const NewsIcon = styled(News)`${styles.sideNavIcon}`;
 const ProfileIcon = styled(Profile)`${styles.sideNavIcon}`;
+const MySidenav = styled(SideNav)`position: fixed;`;
 
 export default function Sidenav({ sidenav, navItems }) {
     const router = useRouter();
@@ -74,7 +75,7 @@ export default function Sidenav({ sidenav, navItems }) {
 
     return (
         <>
-            <SideNav {...sidenav}>
+            <MySidenav {...sidenav}>
                 <Toggle />
                 <Nav>
                 {
@@ -96,7 +97,7 @@ export default function Sidenav({ sidenav, navItems }) {
                     })
                 }
                 </Nav>
-            </SideNav>
+            </MySidenav>
 
             <ConfirmationPrompt 
                 modal={{
