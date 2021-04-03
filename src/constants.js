@@ -1,6 +1,6 @@
 export const apiLink = {
     baseUrl: (process.env.NODE_ENV === 'production') 
-        ? "https://newsgen-backend-23689059.us-west-2.elb.amazonaws.com/" 
+        ? "https://newsgen-backend.herokuapp.com/" 
         : "http://localhost:5001/",
     topNews: "news/top",
     signup: "user/signup",

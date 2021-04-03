@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - news-35
+      - CU-r75v2b_Refactor-homepage-UI
 
 jobs:
   build:
