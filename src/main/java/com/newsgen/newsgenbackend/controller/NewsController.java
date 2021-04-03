@@ -1,6 +1,7 @@
 package com.newsgen.newsgenbackend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newsgen.newsgenbackend.model.FavNews;
@@ -43,13 +44,20 @@ public class NewsController {
     private FavNewsService favNewsService;
 
     @GetMapping("/top")
-    public ResponseEntity<Object> getTopNews() {
+    public ResponseEntity<Object> getTopNews(@RequestParam(required = false) Map<String, String> requestParams) {
+        StringBuilder requestParam = new StringBuilder("");
+        if(requestParams != null) {
+            for(String key : requestParams.keySet()) {
+                requestParam.append("&" + key + "=" + requestParams.get(key));
+            }
+        }
+
         ResponseEntity<Object> response;
         try {
             Mono<String> monoString = WebClient
                 .create("https://newsapi.org/v2/")
                 .get()
-                .uri("top-headlines?country=us&apiKey=" + newsApiKey)
+                .uri("top-headlines?apiKey=" + newsApiKey + requestParam.toString())
                 .retrieve()
                 .bodyToMono(String.class);
             String jsonString = monoString.block();

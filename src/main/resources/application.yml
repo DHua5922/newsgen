@@ -3,11 +3,20 @@ server:
 
 news_api_key: 6c31ae36c2bb4baa8826528f90676ba7
 
+# AWS
+# spring:
+#     datasource:
+#         url: jdbc:mysql://newsgen.cu7vgahbddep.us-west-2.rds.amazonaws.com/newsgen
+#         username: DHua5922
+#         password: blackhand12345
+#     jpa:
+#         hibernate:
+#             ddl-auto: update
+
+# Heroku
 spring:
     datasource:
-        url: jdbc:mysql://newsgen.cu7vgahbddep.us-west-2.rds.amazonaws.com/newsgen
-        username: DHua5922
-        password: blackhand12345
+        url: jdbc:mysql://b2c31b07e0858f:5b655c45@us-cdbr-east-03.cleardb.com/heroku_950e7450056dc09?reconnect=true
     jpa:
         hibernate:
             ddl-auto: update
