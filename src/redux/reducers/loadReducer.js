@@ -13,7 +13,7 @@ export const initialLoadState = {
  * @param {any} action Given action.
  * @return {any} Updated state.
  */
-export default function loadReducer(state = initialState, action) {
+function loadReducer(state = initialLoadState, action) {
     const { type, payload } = action;
 
     switch(type) {
@@ -39,3 +39,5 @@ export default function loadReducer(state = initialState, action) {
             return state;
     }
 }
+
+export default loadReducer;

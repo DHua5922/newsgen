@@ -9,7 +9,9 @@ import styled from "styled-components";
 const fetcher = (queryString) => newsServices.getTopNews(queryString).then(response => response.data);
 
 const Container = styled.div`
-    padding: 2vh 8vw;
+    padding: 0 8vw;
+    padding-top: 8vh;
+    padding-bottom: 2vh;
 `;
 
 function MainContent({...props}) {

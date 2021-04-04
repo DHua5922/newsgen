@@ -7,6 +7,7 @@ import { SuccessMessage } from "./SuccessMessage";
 const Header = styled.h1`
     text-align: ${props => props.textAlign || "center"};
     font-weight: ${props => props.fontWeight || "bold"};
+    font-size: ${props => props.fontSize || "2rem"};
 `;
 
 const Container = styled.div`
