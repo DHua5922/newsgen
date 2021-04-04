@@ -1,81 +1,101 @@
-import { useReducer, useState } from "react";
 import { userServices } from "../../src/services/user/UserService";
-import loadReducer, { initialLoadState } from "../../src/redux/reducers/loadReducer";
 import MyForm from "../../src/components/view/MyForm";
 import Field from "../../src/components/view/Field";
 import { Button } from "react-bootstrap";
 import loadActions from "../../src/redux/actions/loadAction";
-import { styles } from "../../styles/globals";
-import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import WithTitle from "../../src/components/view/WithTitle";
+import WithNavbar from "../../src/components/view/WithNavbar";
+import AuthForm from "../../src/components/view/AuthForm";
+import useMessages from "../../src/custom-hooks/useMessages";
+import signUpActions from "../../src/redux/actions/signUpAction";
 
 const header = {
     children: "Reset Password"
 };
 
-const Container = styled.div`
-    ${styles.form}
-    padding-top: 30vh;
-`;
+function useFields() {
+    const { email } = useSelector(state => state.signUpReducer);
+    const dispatch = useDispatch();
 
-export default function Email() {
-    const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
-    const [email, setEmail] = useState("");
-
-    const fields = [
-            {
-                label: {
-                    children: "Email",
-                },
-                input: {
-                    placeholder: "abc@domain.com",
-                    value: email,
-                    onChange: (evt) => setEmail(evt.target.value),
-                }
+    return [
+        {
+            label: {
+                children: "Email",
+            },
+            input: {
+                placeholder: "abc@domain.com",
+                value: email,
+                onChange: (evt) => dispatch(signUpActions.updateEmail(evt.target.value)),
             }
-        ].map(field => <Field {...field} />);
+        }
+    ];
+}
 
-    const buttons = (
-        <Button 
-            variant="primary"
-            block
-            onClick={() => {
-                dispatchLoadState(loadActions.pending());
-                userServices
-                    .sendEmail({email: email})
-                    .then(success => dispatchLoadState(loadActions.success([success.data])))
-                    .catch(error => {
-                        const response = error.response;
-                        if(response && response.status === 400) {
-                            dispatchLoadState(loadActions.fail([response.data]));
-                        } else {
-                            dispatchLoadState(loadActions.fail([{
-                                message: "There was a problem sending the link. Please try again."
-                            }]));
-                        }
-                    })
-            }}
-        >
-            Send Email
-        </Button>
-    );
+function useButtons() {
+    const { email } = useSelector(state => state.signUpReducer);
+    const dispatch = useDispatch();
 
-    const { pending, errorMsgs, successMsgs } = loadState;
-    const messages = {
-        pending: {
-            isPending: pending,
-            message: "Sending link to reset password. Please wait."
-        },
-        success: successMsgs,
-        error: errorMsgs,
-    };
+    function sendEmail() {
+        dispatch(loadActions.pending());
+        userServices
+            .sendEmail({ email: email })
+            .then(success => dispatch(loadActions.success([success.data])))
+            .catch(error => {
+                const response = error.response;
+                if(response && response.status === 400) {
+                    dispatch(loadActions.fail([response.data]));
+                } else {
+                    dispatch(loadActions.fail([{
+                        message: "There was a problem sending the link. Please try again."
+                    }]));
+                }
+            })
+    }
+
+    return [
+        {
+            props: {
+                variant: "primary",
+                onClick: () => sendEmail()
+            },
+            children: "Send Reset Link"
+        }
+    ];
+}
+
+function MainContent() {
+    const fields = useFields().map((field, index) => (
+        <div key={index}>
+            <Field {...field} />
+        </div>
+    ));
+
+    const buttons = useButtons().map((button, index) => {
+        const { props, children } = button;
+        return (
+            <Button {...props} block key={index}>
+                {children}
+            </Button>
+        );
+    });
+
+    const { pending, errorMsgs, successMsgs } = useSelector(state => state.loadReducer);
+    const messages = useMessages(successMsgs, errorMsgs, pending, "Sending link to reset password. Please wait.");
+
     return (
-        <Container>
-            <MyForm
-                header={header}
-                fields={fields}
-                buttons={buttons}
-                messages={messages}
-            />
-        </Container>
+        <MyForm
+            header={header}
+            fields={fields}
+            buttons={buttons}
+            messages={messages}
+        />
     );
 }
+
+function Email() {
+    const EmailPage = WithTitle(WithNavbar(AuthForm(MainContent)));
+    return <EmailPage title={"Reset Password"} />;
+}
+
+export default Email;
