@@ -32,6 +32,8 @@ public class CookieService {
         return ResponseCookie.from(cookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
+                .sameSite("none")
+                .secure(true)
                 .path("/")
                 .build();
     }

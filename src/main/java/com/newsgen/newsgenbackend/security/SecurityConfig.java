@@ -47,9 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "http://localhost:3000", 
             "https://newsgen.herokuapp.com",
             "https://newsgen-stage.herokuapp.com"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
