@@ -9,7 +9,7 @@ const Container = tw.div`
     m-auto
 `;
 
-function AuthForm(Component) {
+function IsAuthForm(Component) {
     return function AuthFormComponent({...props}) {
         return (
             <Container>
@@ -19,4 +19,4 @@ function AuthForm(Component) {
     }
 }
 
-export default AuthForm;
+export default IsAuthForm;

@@ -1,90 +1,117 @@
-import { useReducer } from "react";
 import Field from "../src/components/view/Field";
 import MyForm from "../src/components/view/MyForm";
 import { styles } from "../styles/globals";
 import styled from "styled-components";
-import MyNavbar from "../src/components/view/MyNavbar";
 import { Button } from "react-bootstrap";
-import signUpReducer, { initialSignUpState } from "../src/redux/reducers/signUpReducer";
-import loadReducer, { initialLoadState } from "../src/redux/reducers/loadReducer";
 import loadActions from "../src/redux/actions/loadAction";
 import signUpActions from "../src/redux/actions/signUpAction";
 import { userServices } from "../src/services/user/UserService";
 import { useRouter } from "next/router";
 import { pageLink } from "../src/constants";
-
-const Container = styled.div`
-    ${styles.form}
-    padding-top: 30vh;
-`;
+import { useDispatch, useSelector } from "react-redux";
+import useMessages from "../src/custom-hooks/useMessages";
+import AuthForm from "../src/components/view/AuthForm";
+import WithNavbar from "../src/components/view/WithNavbar";
+import WithTitle from "../src/components/view/WithTitle";
 
 const header = {
     children: "Sign Up"
 };
 
-export default function SignUp() {
-    const [fieldValues, dispatchFields] = useReducer(signUpReducer, initialSignUpState);
-    const [loadState, dispatchLoadState] = useReducer(loadReducer, initialLoadState);
+function useFields() {
+    const { username, email, password, cpassword } = useSelector(state => state.signUpReducer);
+    const dispatch = useDispatch();
 
-    const fields = [
-            {
-                label: {
-                    children: "Username"
-                },
-                input: {
-                    value: fieldValues.username,
-                    placeholder: "abc123",
-                    onChange: (evt) => dispatchFields(signUpActions.updateUsername(evt.target.value))
-                }
+    return [
+        {
+            label: {
+                children: "Username"
             },
-            {
-                label: {
-                    children: "Email"
-                },
-                input: {
-                    type: "email",
-                    value: fieldValues.email,
-                    placeholder: "abc123@domain.com",
-                    onChange: (evt) => dispatchFields(signUpActions.updateEmail(evt.target.value))
-                }
-            },
-            {
-                label: {
-                    children: "Password"
-                },
-                input: {
-                    type: "password",
-                    value: fieldValues.password,
-                    placeholder: "abc123!",
-                    onChange: (evt) => dispatchFields(signUpActions.updatePassword(evt.target.value))
-                }
-            },
-            {
-                label: {
-                    children: "Confirm Password"
-                },
-                input: {
-                    type: "password",
-                    value: fieldValues.cpassword,
-                    placeholder: "abc123!",
-                    onChange: (evt) => dispatchFields(signUpActions.updateCPassword(evt.target.value))
-                }
+            input: {
+                value: username,
+                placeholder: "abc123",
+                onChange: (evt) => dispatch(signUpActions.updateUsername(evt.target.value))
             }
-        ].map((field, index) => (
-            <div key={index}>
-                <Field {...field} />
-            </div>
-        ));
+        },
+        {
+            label: {
+                children: "Email"
+            },
+            input: {
+                type: "email",
+                value: email,
+                placeholder: "abc123@domain.com",
+                onChange: (evt) => dispatch(signUpActions.updateEmail(evt.target.value))
+            }
+        },
+        {
+            label: {
+                children: "Password"
+            },
+            input: {
+                type: "password",
+                value: password,
+                placeholder: "abc123!",
+                onChange: (evt) => dispatch(signUpActions.updatePassword(evt.target.value))
+            }
+        },
+        {
+            label: {
+                children: "Confirm Password"
+            },
+            input: {
+                type: "password",
+                value: cpassword,
+                placeholder: "abc123!",
+                onChange: (evt) => dispatch(signUpActions.updateCPassword(evt.target.value))
+            }
+        }
+    ];
+}
 
-    const buttons = [
-            {
-                props: {
-                    variant: "primary",
-                    onClick: () => signUp()
-                },
-                children: "Sign Up"
-            }
-        ].map((button, index) => {
+function useButtons() {
+    const router = useRouter();
+    const fieldValues = useSelector(state => state.signUpReducer);
+    const dispatch = useDispatch();
+
+    function signUp() {
+        dispatch(loadActions.pending());
+        userServices.signUp(fieldValues)
+            .then(() => {
+                dispatch(loadActions.success([]));
+                router.push(pageLink.login);
+            })
+            .catch(error => {
+                if(error.response && error.response.status === 400)
+                    dispatch(loadActions.fail(error.response.data));
+                else
+                    dispatch(loadActions.fail([
+                        {
+                            message: "There was a problem creating your account. Please try again."
+                        }
+                    ]));
+            });
+    }
+
+    return [
+        {
+            props: {
+                variant: "primary",
+                onClick: () => signUp()
+            },
+            children: "Sign Up"
+        }
+    ];
+}
+
+function MainContent() {
+    const fields = useFields().map((field, index) => (
+        <div key={index}>
+            <Field {...field} />
+        </div>
+    ));
+
+    const buttons = useButtons().map((button, index) => {
             const { props, children } = button;
             return (
                 <Button {...props} block key={index}>
@@ -93,43 +120,22 @@ export default function SignUp() {
             );
         });
 
-    const router = useRouter();
-    function signUp() {
-        dispatchLoadState(loadActions.pending());
-        userServices.signUp(fieldValues)
-            .then(() => router.push(pageLink.login))
-            .catch(error => {
-                if(error.response && error.response.status === 400)
-                    dispatchLoadState(loadActions.fail(error.response.data));
-                else
-                    dispatchLoadState(loadActions.fail([
-                        {
-                            message: "There was a problem creating your account. Please try again."
-                        }
-                    ]));
-            });
-    }
+    const { successMsgs, errorMsgs, pending } = useSelector(state => state.loadReducer);
+    const messages = useMessages(successMsgs, errorMsgs, pending, "Creating your account. Please wait.");
 
-    const { successMsgs, errorMsgs, pending } = loadState;
-    const messages = {
-        success: successMsgs,
-        error: errorMsgs,
-        pending: {
-            isPending: pending,
-            message: "Creating your account. Please wait." 
-        }
-    };
     return (
-        <>
-            <MyNavbar />
-            <Container>
-                <MyForm
-                    header={header}
-                    fields={fields}
-                    buttons={buttons}
-                    messages={messages}
-                />
-            </Container>
-        </>
-    ); 
+        <MyForm
+            header={header}
+            fields={fields}
+            buttons={buttons}
+            messages={messages}
+        />
+    );
 }
+
+function SignUp() {
+    const SignUpPage = WithTitle(WithNavbar(AuthForm(MainContent)));
+    return <SignUpPage title={"Sign Up"} />;
+}
+
+export default SignUp;
