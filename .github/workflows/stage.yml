@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-r76jfq_Revamp-email-UI
+      - CU-r76jh1_Revamp-new-password-UI
 
 jobs:
   build:
