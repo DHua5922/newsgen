@@ -1,8 +1,4 @@
 export const styles = {
-    ellipsisOverflow:`
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;`,
     center:`
         display: grid;
         justify-content: center;

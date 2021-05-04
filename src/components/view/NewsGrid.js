@@ -1,5 +1,10 @@
 import { News } from './News';
 import { Container, Row, Col } from 'react-bootstrap';
+import tw, { styled } from "twin.macro";
+
+const TCol = styled(Col)`
+  ${tw`pb-8`}
+`;
 
 export default function NewsGrid({ list }) {
   return (
@@ -7,11 +12,11 @@ export default function NewsGrid({ list }) {
       <Row>
         { 
           list.map((news, index) => 
-            <Col key={index} 
+            <TCol key={index} 
               sm={12} md={6} 
               lg={4} xl={3}>
                 <News {...news} />
-            </Col>)
+            </TCol>)
         }
       </Row>
     </Container>

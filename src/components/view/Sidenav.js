@@ -1,6 +1,5 @@
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'; 
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { Home } from "@styled-icons/boxicons-solid/Home";
+import tw from "tailwind-styled-components";
 import styled from "styled-components";
 import { styles } from "../../../styles/globals";
 import { pageLink } from '../../constants';
@@ -18,7 +17,19 @@ const HomeIcon = styled(Home)`${styles.sideNavIcon}`;
 const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
 const NewsIcon = styled(News)`${styles.sideNavIcon}`;
 const ProfileIcon = styled(Profile)`${styles.sideNavIcon}`;
-const MySidenav = styled(SideNav)`position: fixed;`;
+const MySidenav = tw.div`
+    fixed
+    bg-gray-50
+    h-full
+`;
+
+const NavItem = tw.div`
+    flex 
+    items-center 
+    cursor-pointer 
+    px-3 py-2 
+    hover:bg-gray-100
+`;
 
 export default function Sidenav({ sidenav, navItems }) {
     const router = useRouter();
@@ -76,27 +87,17 @@ export default function Sidenav({ sidenav, navItems }) {
     return (
         <>
             <MySidenav {...sidenav}>
-                <Toggle />
-                <Nav>
                 {
                     items.map(item => {
-                        const { 
-                            onClick, eventKey,
-                            icon, label 
-                        } = item;
-
+                        const { onClick, icon, label } = item;
                         return (
-                            <NavItem 
-                                eventKey={eventKey}
-                                onClick={onClick}
-                            >
-                                <NavIcon>{icon}</NavIcon>
-                                <NavText>{label}</NavText>
+                            <NavItem onClick={onClick}>
+                                <div>{icon}</div>
+                                <div className="ml-2">{label}</div>
                             </NavItem>
                         );
                     })
                 }
-                </Nav>
             </MySidenav>
 
             <ConfirmationPrompt 

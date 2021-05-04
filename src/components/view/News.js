@@ -1,48 +1,37 @@
-import styled from "styled-components";
-import { styles } from "../../../styles/globals";
+import tw, { styled } from "twin.macro";
 
-const Title = styled.h4`
-    ${styles.ellipsisOverflow}
-    width: 87%;
+const ellipsisOverflow = tw`
+    overflow-ellipsis 
+    overflow-hidden 
+    whitespace-nowrap
 `;
+const Title = styled.h4`${ellipsisOverflow}`;
+const Description = styled.p`${ellipsisOverflow}`;
 
 const Image = styled.img`
-    width: 100%;
     height: 250px;
-    margin-top: 10px;
-`;
-
-const Description = styled.p`
-    ${styles.ellipsisOverflow}
-`;
-
-const Link = styled.a`
-    color: black !important;
-    text-decoration: none;
-`;
-
-const Row = styled.div`
-    display: flex; 
-    justify-content: space-between;
+    ${tw`my-2 w-full`}
 `;
 
 const NewsDisplay = styled.div`
-    position: relative;
+    ${tw`flex w-full px-10`}
 `;
+const NewsContainer = styled.div`${tw`w-full`}`
+const Icon = styled.i`${tw`ml-3`}`;
 
 export function News({ title, urlToImage, description, url, icon }) {
     return (
         <NewsDisplay>
-            <Row>  
+            <NewsContainer>
                 <Title>
-                    <Link href={url} target="_blank">
+                    <a href={url} target="_blank">
                         {title}
-                    </Link>
+                    </a>
                 </Title>
-                { icon }
-            </Row>  
-            <Image src={urlToImage} />
-            <Description>{description}</Description>
+                <Image src={urlToImage} />
+                <Description>{description}</Description>
+            </NewsContainer>
+            <Icon>{icon}</Icon>
         </NewsDisplay>
     );
 }
