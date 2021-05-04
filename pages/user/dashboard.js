@@ -13,6 +13,7 @@ import loadReducer, { initialLoadState } from "../../src/redux/reducers/loadRedu
 import loadActions from "../../src/redux/actions/loadAction";
 import dashboardReducer, { initialDashboardState } from "../../src/redux/reducers/dashboardReducer";
 import dashboardActions from "../../src/redux/actions/dashboardAction";
+import UserPage from "../../src/components/view/UserPage";
 
 const Container = styled.div`
     padding: 32px 44px;
@@ -40,7 +41,7 @@ export default function Dashboard() {
 
     let componentToRender;
     if(!favNews) {
-        componentToRender = <Center><Loader message={"Loading favorite news..."} /></Center>;
+        componentToRender = () => <Center><Loader message={"Loading favorite news..."} /></Center>;
     } else {
         const { errorMsgs, pending } = loadState;
 
@@ -115,7 +116,7 @@ export default function Dashboard() {
                 ))
         };
 
-        componentToRender = (
+        componentToRender = () => (
             <Container>
                 <NewsGrid list={list} />
                 <ConfirmationPrompt 
@@ -128,10 +129,6 @@ export default function Dashboard() {
         );
     }
 
-    return (
-        <>
-            <Sidenav />
-            {componentToRender}
-        </>
-    );
+    const Page = UserPage(componentToRender);
+    return <Page title="Your favorite news" />;
 }

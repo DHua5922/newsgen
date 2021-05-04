@@ -18,7 +18,6 @@ const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
 const NewsIcon = styled(News)`${styles.sideNavIcon}`;
 const ProfileIcon = styled(Profile)`${styles.sideNavIcon}`;
 const MySidenav = tw.div`
-    fixed
     bg-gray-50
     h-full
 `;

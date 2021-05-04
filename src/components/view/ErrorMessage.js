@@ -5,7 +5,6 @@ import { styles } from "../../../styles/globals";
 
 const Icon = styled(ErrorCircle)`${styles.iconMessage}`;
 const msgProps = {
-    backgroundColor: "#FF7A7A",
     textColor: "red",
 };
 

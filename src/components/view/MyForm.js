@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ErrorMessage } from "./ErrorMessage";
 import { Loader } from "./Loader";
 import { SuccessMessage } from "./SuccessMessage";
+import tw from "twin.macro";
 
 const Header = styled.h1`
     text-align: ${props => props.textAlign || "center"};
@@ -22,6 +23,7 @@ export default function MyForm({ form={}, header={}, fields={}, buttons={}, mess
             </Header>
             
             { fields }
+            <div tw="py-2" />
             { buttons }
 
             <Container>
