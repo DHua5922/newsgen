@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import ConfirmationPrompt from "../../src/components/view/ConfirmationPrompt";
 import { Star } from "@styled-icons/boxicons-regular/Star";
-import WithTitle from "../../src/components/view/WithTitle";
 import WithLoading from "../../src/components/view/WithLoading";
 import tw from "tailwind-styled-components";
 import UserPage from "../../src/components/view/UserPage";
@@ -13,8 +12,7 @@ import UserPage from "../../src/components/view/UserPage";
 const fetcher = (queryString) => newsServices.getTopNews(queryString).then(response => response.data);
 
 const Container = styled.div`
-    padding: 3vh 4vw;
-    margin-left: 80px;
+    padding: 25px 0;
 `;
 const FavIcon = tw(Star)`
     cursor-pointer
@@ -66,7 +64,7 @@ export default function NewsPage() {
         fetcher
     );
 
-    const Page = WithTitle(UserPage(WithLoading(MainContent)));
+    const Page = UserPage(WithLoading(MainContent));
     return (
         <Page 
             title={"News"}

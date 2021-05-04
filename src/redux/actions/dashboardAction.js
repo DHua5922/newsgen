@@ -19,6 +19,11 @@ const dashboardActions = {
             payload: all,
         }
     },
+    reset: () => {
+        return {
+            type: redux.RESET_DASHBOARD
+        }
+    }
 };
 
 export default dashboardActions;

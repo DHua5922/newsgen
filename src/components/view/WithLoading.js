@@ -1,9 +1,10 @@
 import { Loader } from "./Loader";
 import { ErrorMessage } from "./ErrorMessage";
-import styled from "styled-components";
-import { styles } from "../../../styles/globals";
+import tw, { styled } from "twin.macro";
 
-const Center = styled.div`${styles.center}`;
+const Center = tw.div`
+    grid justify-center items-center h-full w-full
+`;
 
 function WithLoading(Component) {
     return function WithLoadingComponent({ error, loading, ...props }) {

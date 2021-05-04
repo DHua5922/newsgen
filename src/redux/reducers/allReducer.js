@@ -3,12 +3,14 @@ import loadReducer from "./loadReducer";
 import loginReducer from "./loginReducer";
 import signUpReducer from "./signUpReducer";
 import profileReducer from "./profileReducer";
+import dashboardReducer from "./dashboardReducer";
 
 const allReducer = combineReducers({
-    loadReducer: loadReducer,
-    loginReducer: loginReducer,
-    signUpReducer: signUpReducer,
-    profileReducer: profileReducer,
+    loadReducer,
+    loginReducer,
+    signUpReducer,
+    profileReducer,
+    dashboardReducer,
 });
 
 export default allReducer;

@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-r76jhv_Revamp-profile-UI
+      - CU-un56x7_Refactor-dashboard-code
 
 jobs:
   build:
