@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-un56x7_Refactor-dashboard-code
+      - CU-un5hmu_Fix-auth-form-UI
 
 jobs:
   build:

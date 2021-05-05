@@ -2,8 +2,7 @@ import useSWR from "swr";
 import { newsServices } from "../src/services/news/NewsService";
 import NewsGrid from "../src/components/view/NewsGrid";
 import WithLoading from "../src/components/view/WithLoading";
-import WithNavbar from "../src/components/view/WithNavbar";
-import WithTitle from "../src/components/view/WithTitle";
+import GuestPage from "../src/components/view/GuestPage";
 import styled from "styled-components";
 
 const fetcher = (queryString) => newsServices.getTopNews(queryString).then(response => response.data);
@@ -24,7 +23,7 @@ export default function Home() {
         fetcher
     );
 
-    const Homepage = WithTitle(WithNavbar(WithLoading(MainContent)));
+    const Homepage = GuestPage(WithLoading(MainContent));
     return (
         <Homepage 
             title={"newsgen"}

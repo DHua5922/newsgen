@@ -1,30 +1,46 @@
-import { Form } from "react-bootstrap";
-import styled from "styled-components";
+import { Button, Form } from "react-bootstrap";
 import { ErrorMessage } from "./ErrorMessage";
 import { Loader } from "./Loader";
 import { SuccessMessage } from "./SuccessMessage";
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
+import Field from "./Field";
 
 const Header = styled.h1`
-    text-align: ${props => props.textAlign || "center"};
-    font-weight: ${props => props.fontWeight || "bold"};
     font-size: ${props => props.fontSize || "2rem"};
+    ${tw`text-center font-bold`}
 `;
 
 const Container = styled.div`
-    margin-top: 20px;
+    margin-top: 10px;
 `;
 
-export default function MyForm({ form={}, header={}, fields={}, buttons={}, messages={} }) {
+export default function MyForm({ form={}, header={}, fields=[], buttons=[], messages={} }) {
     return (
         <Form {...form}>
             <Header {...header.props}>
                 {header.children}
             </Header>
             
-            { fields }
+            { 
+                fields.map((field, index) => (
+                    <div key={index} tw="mt-3">
+                        <Field {...field} />
+                    </div>
+                )) 
+            }
+
             <div tw="py-2" />
-            { buttons }
+
+            { 
+                buttons.map((button, index) => {
+                    const { props, children } = button;
+                    return (
+                        <Button {...props} key={index} tw="w-full">
+                            {children}
+                        </Button>
+                    );
+                }) 
+            }
 
             <Container>
                 { 

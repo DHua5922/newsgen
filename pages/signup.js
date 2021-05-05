@@ -1,8 +1,3 @@
-import Field from "../src/components/view/Field";
-import MyForm from "../src/components/view/MyForm";
-import { styles } from "../styles/globals";
-import styled from "styled-components";
-import { Button } from "react-bootstrap";
 import loadActions from "../src/redux/actions/loadAction";
 import signUpActions from "../src/redux/actions/signUpAction";
 import { userServices } from "../src/services/user/UserService";
@@ -10,9 +5,8 @@ import { useRouter } from "next/router";
 import { pageLink } from "../src/constants";
 import { useDispatch, useSelector } from "react-redux";
 import useMessages from "../src/custom-hooks/useMessages";
-import AuthForm from "../src/components/view/AuthForm";
-import WithNavbar from "../src/components/view/WithNavbar";
-import WithTitle from "../src/components/view/WithTitle";
+import AuthContainer from "../src/components/view/AuthContainer";
+import GuestPage from "../src/components/view/GuestPage";
 
 const header = {
     children: "Sign Up"
@@ -105,36 +99,21 @@ function useButtons() {
 }
 
 function MainContent() {
-    const fields = useFields().map((field, index) => (
-        <div key={index}>
-            <Field {...field} />
-        </div>
-    ));
-
-    const buttons = useButtons().map((button, index) => {
-            const { props, children } = button;
-            return (
-                <Button {...props} block key={index}>
-                    {children}
-                </Button>
-            );
-        });
-
     const { successMsgs, errorMsgs, pending } = useSelector(state => state.loadReducer);
     const messages = useMessages(successMsgs, errorMsgs, pending, "Creating your account. Please wait.");
 
     return (
-        <MyForm
+        <AuthContainer
             header={header}
-            fields={fields}
-            buttons={buttons}
+            fields={useFields()}
+            buttons={useButtons()}
             messages={messages}
         />
     );
 }
 
 function SignUp() {
-    const SignUpPage = WithTitle(WithNavbar(AuthForm(MainContent)));
+    const SignUpPage = GuestPage(MainContent);
     return <SignUpPage title={"Sign Up"} />;
 }
 

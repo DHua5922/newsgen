@@ -1,12 +1,8 @@
 import { userServices } from "../../src/services/user/UserService";
-import MyForm from "../../src/components/view/MyForm";
-import Field from "../../src/components/view/Field";
-import { Button } from "react-bootstrap";
 import loadActions from "../../src/redux/actions/loadAction";
 import { useDispatch, useSelector } from "react-redux";
-import WithTitle from "../../src/components/view/WithTitle";
-import WithNavbar from "../../src/components/view/WithNavbar";
-import AuthForm from "../../src/components/view/AuthForm";
+import GuestPage from "../../src/components/view/GuestPage";
+import AuthContainer from "../../src/components/view/AuthContainer";
 import useMessages from "../../src/custom-hooks/useMessages";
 import signUpActions from "../../src/redux/actions/signUpAction";
 
@@ -65,37 +61,20 @@ function useButtons() {
 }
 
 function MainContent() {
-    const fields = useFields().map((field, index) => (
-        <div key={index}>
-            <Field {...field} />
-        </div>
-    ));
-
-    const buttons = useButtons().map((button, index) => {
-        const { props, children } = button;
-        return (
-            <Button {...props} block key={index}>
-                {children}
-            </Button>
-        );
-    });
-
     const { pending, errorMsgs, successMsgs } = useSelector(state => state.loadReducer);
     const messages = useMessages(successMsgs, errorMsgs, pending, "Sending link to reset password. Please wait.");
 
     return (
-        <MyForm
+        <AuthContainer
             header={header}
-            fields={fields}
-            buttons={buttons}
+            fields={useFields()}
+            buttons={useButtons()}
             messages={messages}
         />
     );
 }
 
-function Email() {
-    const EmailPage = WithTitle(WithNavbar(AuthForm(MainContent)));
+export default function Email() {
+    const EmailPage = GuestPage(MainContent);
     return <EmailPage title={"Reset Password"} />;
 }
-
-export default Email;

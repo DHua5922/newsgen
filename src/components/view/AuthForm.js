@@ -1,9 +1,20 @@
-import WithCenter from "./WithCenter";
-import IsAuthForm from "./IsAuthForm";
+import MyForm from "./MyForm";
+import tw from "twin.macro";
 
-function AuthForm(Component) {
-    const Centered = WithCenter(IsAuthForm(Component));
-    return () => <Centered backgroundColor={"bg-gray-50"}></Centered>;
+const Container = tw.div`
+    bg-white
+    shadow-md
+    p-8
+    w-full
+    max-w-md
+    m-auto
+`;
+
+export default function AuthForm({ children, ...formChildren }) {
+    return (
+        <Container>
+            <MyForm {...formChildren} />
+            {children}
+        </Container>
+    );
 }
-
-export default AuthForm;

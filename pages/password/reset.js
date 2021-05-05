@@ -2,13 +2,9 @@ import { useRouter } from 'next/router';
 import { pageLink } from '../../src/constants';
 import signUpActions from "../../src/redux/actions/signUpAction";
 import loadActions from "../../src/redux/actions/loadAction";
-import MyForm from "../../src/components/view/MyForm";
-import { Button } from 'react-bootstrap';
-import Field from '../../src/components/view/Field';
 import { userServices } from "../../src/services/user/UserService";
-import WithTitle from '../../src/components/view/WithTitle';
-import WithNavbar from '../../src/components/view/WithNavbar';
-import AuthForm from '../../src/components/view/AuthForm';
+import GuestPage from '../../src/components/view/GuestPage';
+import AuthContainer from '../../src/components/view/AuthContainer';
 import { useDispatch, useSelector } from "react-redux";
 import useMessages from '../../src/custom-hooks/useMessages';
 
@@ -82,36 +78,21 @@ function useButtons() {
 }
 
 function MainContent() {
-    const fields = useFields().map((field, index) => (
-        <div key={index}>
-            <Field {...field} />
-        </div>
-    ));
-
-    const buttons = useButtons().map((button, index) => {
-        const { props, children } = button;
-        return (
-            <Button {...props} block key={index}>
-                {children}
-            </Button>
-        );
-    });
-
     const { pending, errorMsgs, successMsgs } = useSelector(state => state.loadReducer);
     const messages = useMessages(successMsgs, errorMsgs, pending, "Resetting password. Please wait.");
 
     return (
-        <MyForm
+        <AuthContainer
             header={header}
-            fields={fields}
-            buttons={buttons}
+            fields={useFields()}
+            buttons={useButtons()}
             messages={messages}
         />
     );
 }
 
 function Reset() {
-    const EmailPage = WithTitle(WithNavbar(AuthForm(MainContent)));
+    const EmailPage = GuestPage(MainContent);
     return <EmailPage title={"Reset Password"} />;
 }
 
