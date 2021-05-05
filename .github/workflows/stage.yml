@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-un7041_Clean-up-code-and-UI
+      - CU-un72wz_Update-styled-component-import
 
 jobs:
   build:

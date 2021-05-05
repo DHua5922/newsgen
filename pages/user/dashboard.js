@@ -1,5 +1,4 @@
 import { newsServices } from "../../src/services/news/NewsService";
-import styled from "styled-components";
 import NewsGrid from "../../src/components/view/NewsGrid";
 import { Loader } from "../../src/components/view/Loader";
 import { ErrorMessage } from "../../src/components/view/ErrorMessage";
@@ -12,7 +11,7 @@ import dashboardActions from "../../src/redux/actions/dashboardAction";
 import UserPage from "../../src/components/view/UserPage";
 import { useDispatch, useSelector } from "react-redux";
 import WithLoading from "../../src/components/view/WithLoading";
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
 
 const Container = styled.div`
     margin: 25px 0;
