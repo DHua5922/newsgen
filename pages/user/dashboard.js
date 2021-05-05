@@ -112,6 +112,7 @@ function useNews() {
                 .then(response => {
                     setNews(response.data);
                     dispatch(dashboardActions.updateFavNews(response.data));
+                    dispatch(loadActions.success([]));
                 });
     });
 

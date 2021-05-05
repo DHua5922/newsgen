@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-un72wz_Update-styled-component-import
+      - CU-un7567_Fix-dashboard-loading
 
 jobs:
   build:
