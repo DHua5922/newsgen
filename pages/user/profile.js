@@ -72,11 +72,7 @@ function useProfileForm() {
                 successMsgs: email_success,
                 errorMsgs: email_error,
             }
-        ].map((field, index) => (
-            <div key={index} tw="mt-3">
-                <Field {...field} />
-            </div>
-        ));
+        ];
 
     const buttons = [
             {
@@ -91,14 +87,7 @@ function useProfileForm() {
                 },
                 children: "Update profile"
             }
-        ].map((button, index) => {
-            const { props, children } = button;
-            return (
-                <Button {...props} key={index} tw="w-full">
-                    {children}
-                </Button>
-            );
-        });
+        ];
         
     const messages = {
         success: [],

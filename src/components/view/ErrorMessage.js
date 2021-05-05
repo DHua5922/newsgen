@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "twin.macro";
 import { ErrorCircle } from "@styled-icons/boxicons-regular/ErrorCircle";
 import { IconMessage } from "./IconMessage";
 import { styles } from "../../../styles/globals";

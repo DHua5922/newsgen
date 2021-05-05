@@ -1,8 +1,8 @@
 import { Modal } from "react-bootstrap";
-import styled from "styled-components";
+import tw from "twin.macro";
 
-const Footer = styled(Modal.Footer)`
-    border-top: 0;
+const Footer = tw(Modal.Footer)`
+    border-t-0
 `;
 
 export default function ConfirmationPrompt({ modal={}, header={}, body={}, footer={} }) {

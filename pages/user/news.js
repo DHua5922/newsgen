@@ -1,12 +1,11 @@
 import useSWR from "swr";
 import { newsServices } from "../../src/services/news/NewsService";
 import NewsGrid from "../../src/components/view/NewsGrid";
-import styled from "styled-components";
 import { useState } from "react";
 import ConfirmationPrompt from "../../src/components/view/ConfirmationPrompt";
 import { Star } from "@styled-icons/boxicons-regular/Star";
 import WithLoading from "../../src/components/view/WithLoading";
-import tw from "tailwind-styled-components";
+import tw, { styled } from "twin.macro";
 import UserPage from "../../src/components/view/UserPage";
 
 const fetcher = (queryString) => newsServices.getTopNews(queryString).then(response => response.data);

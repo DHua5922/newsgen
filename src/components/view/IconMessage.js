@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import tw, { styled } from "twin.macro";
 
 const Message = styled.div`
-    font-size: 1rem;
     margin-left: 10px;
+    ${tw`text-base`}
 `;
 
 const Row = styled.div`

@@ -1,7 +1,5 @@
 import { Home } from "@styled-icons/boxicons-solid/Home";
-import tw from "tailwind-styled-components";
-import styled from "styled-components";
-import { styles } from "../../../styles/globals";
+import tw from "twin.macro";
 import { pageLink } from '../../constants';
 import { LogOut } from "@styled-icons/boxicons-regular/LogOut";
 import { useRouter } from 'next/router';
@@ -13,10 +11,12 @@ import { ErrorMessage } from "./ErrorMessage";
 import { News } from "@styled-icons/boxicons-regular/News";
 import { Profile } from "@styled-icons/icomoon/Profile";
 
-const HomeIcon = styled(Home)`${styles.sideNavIcon}`;
-const LogoutIcon = styled(LogOut)`${styles.sideNavIcon}`;
-const NewsIcon = styled(News)`${styles.sideNavIcon}`;
-const ProfileIcon = styled(Profile)`${styles.sideNavIcon}`;
+const iconStyle = `h-7`;
+const HomeIcon = tw(Home)`${iconStyle}`;
+const LogoutIcon = tw(LogOut)`${iconStyle}`;
+const NewsIcon = tw(News)`${iconStyle}`;
+const ProfileIcon = tw(Profile)`${iconStyle}`;
+
 const MySidenav = tw.div`
     bg-gray-50
     h-full
@@ -26,7 +26,7 @@ const NavItem = tw.div`
     flex 
     items-center 
     cursor-pointer 
-    px-3 py-2 
+    px-6 py-2 
     hover:bg-gray-100
 `;
 
@@ -92,7 +92,7 @@ export default function Sidenav({ sidenav, navItems }) {
                         return (
                             <NavItem onClick={onClick}>
                                 <div>{icon}</div>
-                                <div className="ml-2">{label}</div>
+                                <div tw="ml-3 whitespace-nowrap">{label}</div>
                             </NavItem>
                         );
                     })
