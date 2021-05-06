@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-un7567_Fix-dashboard-loading
+      - CU-ut64yg_Fix-news-overflow
 
 jobs:
   build:

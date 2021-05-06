@@ -1,6 +1,6 @@
 import { Loader } from "./Loader";
 import { ErrorMessage } from "./ErrorMessage";
-import tw, { styled } from "twin.macro";
+import tw from "twin.macro";
 
 const Center = tw.div`
     grid justify-center items-center h-full w-full

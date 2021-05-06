@@ -20,6 +20,7 @@ const ProfileIcon = tw(Profile)`${iconStyle}`;
 const MySidenav = tw.div`
     bg-gray-50
     h-full
+    fixed
 `;
 
 const NavItem = tw.div`
