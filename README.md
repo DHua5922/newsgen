@@ -1,12 +1,12 @@
 # newsgen-backend
-Backend API for managing users and news.
+Backend API for managing news.
 
 ## Technologies
-* [Spring Boot](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)
+* Spring Boot
 * Java
 * Docker
-* [AWS](https://aws.amazon.com/)
-* [ClickUp](https://clickup.com/)
+* AWS Fargate & ECR
+* MySQL
 
 ## Important Daily Routine
 When working with the API again
