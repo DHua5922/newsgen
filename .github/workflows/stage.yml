@@ -3,7 +3,7 @@ name: Deploy To Staging Environment on Heroku
 on:
   push:
     branches:
-      - CU-ut64yg_Fix-news-overflow
+      - CU-uz9naw_Add-tab-icon
 
 jobs:
   build:
