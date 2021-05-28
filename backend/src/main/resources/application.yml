@@ -1,0 +1,33 @@
+server:
+    port: 5001
+
+news_api_key: 6c31ae36c2bb4baa8826528f90676ba7
+
+# AWS
+# spring:
+#     datasource:
+#         url: jdbc:mysql://newsgen.cu7vgahbddep.us-west-2.rds.amazonaws.com/newsgen
+#         username: DHua5922
+#         password: blackhand12345
+#     jpa:
+#         hibernate:
+#             ddl-auto: update
+
+# Heroku
+spring:
+    datasource:
+        url: jdbc:mysql://b2c31b07e0858f:5b655c45@us-cdbr-east-03.cleardb.com/heroku_950e7450056dc09?reconnect=true
+    jpa:
+        hibernate:
+            ddl-auto: update
+
+authentication:
+    tokenSecret: myTokenSecret
+    tokenExpirationMsec: 3600000 # 1 hour
+    refreshTokenExpirationMsec: 7776000000 # 90 days
+    accessTokenCookieName: accessToken
+    refreshTokenCookieName: refreshToken
+
+mailjet:
+    publicAPIKey: 977c831a455cec7c6d4c509d0acd452b
+    privateAPIKey: ebe38830545cfd3c7c653d0f53b4193d
