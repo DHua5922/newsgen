@@ -26,7 +26,10 @@
 on:
   push:
     branches: 
-      - news-26
+      - main
+    paths:
+      - backend/**
+      - .github/workflows/production-backend.yml
 
 name: Deploy to Amazon Fargate
 
